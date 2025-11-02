@@ -7,15 +7,14 @@ on:
     branches: [ "main" ]
 
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js 23
-      uses: actions/setup-node@v4
+    - uses: actions/setup-node@v4
       with:
-        node-version: 23
+        node-version: '20.x'
         cache: 'npm'
-    - run: npm ci --legacy-peer-deps
-    - run: npm run lint
+    - run: cp example-config.json config.json
+    - run: npm ci
+    - run: npx tsc
