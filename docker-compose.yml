@@ -2,11 +2,25 @@ version: '3.8'
 
 services:
   nginx:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile.nginx
     image: tiangolo/nginx-rtmp
-    restart: unless-stopped
+    restart: always
     ports:
       - "1935:1935"
     volumes:
       - ./streamer.conf:/etc/nginx/nginx.conf:ro
       - ./src:/usr/share/nginx/html
+
+  streamer:
+    build:
+      context: .
+      dockerfile: Dockerfile.streamer
+    restart: always
+    network_mode: host
+    depends_on:
+      - nginx
+    command: npm start
+    environment:
+      - CHROME_URL=ws://chrome:4444/devtools/browser
