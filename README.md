@@ -26,5 +26,5 @@ docker compose up -d --build
 ## Start Streamer
 
 ```sh
-bin i && bun start
+bun i && bun start
 ```
