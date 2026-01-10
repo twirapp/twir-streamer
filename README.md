@@ -1,13 +1,13 @@
 # Potat Streamer
 
-It streams the 24/7 grafana for [PotatBotat](https://potat.app)
+It streams the 24/7 grafana for [TwirApp](https://twir.app)
 
 ## 🐳 Docker Compose
 
 ### 1. Prerequisites
 
 - [Docker](https://www.docker.com/products/docker-desktop) and [Docker Compose](https://docs.docker.com/compose/) installed.
-- [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/).
+- [Bun](https://bun.sh/).
 - Rename `streamer.example.conf` to `streamer.conf` and enter your stream url and stream keys.
 
 ### 2. Create Container
@@ -26,6 +26,5 @@ docker compose up -d --build
 ## Start Streamer
 
 ```sh
-npm install && npm run start
+bin i && bun start
 ```
-
