@@ -242,6 +242,9 @@ class Streamer {
     const browserConfig: LaunchOptions = {
       headless: true,
       args: ["--window-size=1920,1080", "--no-sandbox"],
+      env: {
+        TZ: configuration.timezone || "UTC",
+      },
     };
 
     if (this.config.executablePath) {
