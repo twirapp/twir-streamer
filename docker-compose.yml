@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   nginx:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile.nginx
     image: tiangolo/nginx-rtmp
@@ -21,6 +19,5 @@ services:
     network_mode: host
     depends_on:
       - nginx
-    command: npm start
     environment:
       - CHROME_URL=ws://chrome:4444/devtools/browser

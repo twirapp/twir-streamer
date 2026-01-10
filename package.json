@@ -1,31 +1,20 @@
 {
-  "name": "potat-streamer",
-  "version": "1.0.0",
+  "name": "twir-streamer",
   "type": "module",
-  "main": "index.js",
   "scripts": {
-    "start": "npm run build && npm run softstart",
-    "softstart": "node --max-old-space-size=8192 --no-warnings --harmony-temporal ./dist/src/index.js",
-    "build": "tsc && tsc-alias",
-    "lint:fix": "eslint --ext .ts ./src --fix",
-    "lint": "eslint --ext .ts ./src"
+    "dev": "bun run --watch --no-clear-screen src/index.ts",
+    "start": "bun run ./src/index.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "chalk": "^5.4.1",
-    "moment-timezone": "^0.5.47",
-    "nats": "^2.29.2",
-    "puppeteer": "^24.4.0",
-    "tree-kill": "^1.2.2",
-    "winston": "^3.17.0"
+    "moment-timezone": "0.6.0",
+    "puppeteer": "24.34.0",
+    "tree-kill": "1.2.2"
   },
   "devDependencies": {
-    "@types/amqplib": "^0.10.6",
-    "@types/node": "^22.13.9",
-    "tsc-alias": "^1.8.11",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "@types/bun": "1.3.5",
+    "typescript": "5.9.3"
   }
 }
