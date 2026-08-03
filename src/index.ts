@@ -316,6 +316,11 @@ class Streamer {
       throw new Error("Browser session not initialized");
     }
 
+    const staleCookies = await this.browserSession.cookies();
+    if (staleCookies.length) {
+      await this.browserSession.deleteCookie(...staleCookies);
+    }
+
     const page = await this.browserSession.newPage();
     await page.goto(this.config.url, { waitUntil: "networkidle0" });
 
