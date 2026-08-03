@@ -1,6 +1,6 @@
 {
   "streamKey": "amongus_sus",
-  "url": "http://grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
+	"url": "http://twir_grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
   "grafanaUser": "twir-streamer",
   "grafanaPass": "",
   "grafanaEnabled": false,

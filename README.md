@@ -18,7 +18,7 @@ The `twir` Swarm overlay must already exist with `Attachable=true`. Set these fi
 ```json
 {
   "grafanaEnabled": true,
-  "url": "http://grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
+  "url": "http://twir_grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
   "grafanaUser": "twir-streamer",
   "grafanaPass": "stored viewer password"
 }
@@ -36,7 +36,8 @@ docker compose up -d --build
 - Copy your `streamer.conf` and `stunnel.conf` into the image.
 - The RTMP server will listen on port `1935` (default RTMP port).
 - The streamer joins the external `twir` overlay network and opens Grafana internally at
-  `http://grafana:3000`.
+  `http://twir_grafana:3000`. Use the stack-qualified name because another stack also publishes
+  the `grafana` alias on this network.
 - Uses stunnel to stream to kick which requires rtmps, which nginx struggles with.
 - The configuration will push your stream to Twitch, YouTube, and Kick.
 
