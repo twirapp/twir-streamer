@@ -18,7 +18,7 @@ The `twir` Swarm overlay must already exist with `Attachable=true`. Set these fi
 ```json
 {
   "grafanaEnabled": true,
-  "grafanaUrl": "http://grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
+  "url": "http://grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
   "grafanaUser": "twir-streamer",
   "grafanaPass": "stored viewer password"
 }
