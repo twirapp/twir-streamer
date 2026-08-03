@@ -26,9 +26,20 @@ The `twir` Swarm overlay must already exist with `Attachable=true`. Set these fi
 
 Create `twir-streamer` as a Viewer in Grafana. Do not reuse the Grafana administrator account.
 `config.json` and `cookies.json` are bind-mounted at runtime and excluded from the image build.
+If `injectedCss` overrides Grafana panel headings for a 1920x1080 stream, keep them near `22px`;
+larger headings reduce the plot and legend area inside every panel.
 
 ```sh
 docker compose up -d --build
+```
+
+After changing Grafana or restarting the browser capture, verify the actual RTMP output rather than
+only opening the dashboard in a browser:
+
+```sh
+docker compose exec streamer ffmpeg -hide_banner -loglevel error -y \
+  -i rtmp://nginx:1935/live/potato -frames:v 1 /tmp/live-frame.png
+docker cp twir-streamer-streamer-1:/tmp/live-frame.png /tmp/live-frame.png
 ```
 
 - This will start the NGINX RTMP server and stunnel proxy.
