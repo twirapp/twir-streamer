@@ -275,11 +275,11 @@ class Streamer {
     await page.goto(this.config.url, { waitUntil: "networkidle0" });
 
     if (this.config.grafanaEnabled) {
-      if (page.url() !== this.config.url) {
+      if (new URL(page.url()).pathname.startsWith("/login")) {
         Logger.warn("Cookies expired... signing into Grafana");
         await this.signIntoGrafana();
         await page.goto(this.config.url, { waitUntil: "networkidle0" });
-        if (page.url() !== this.config.url) {
+        if (new URL(page.url()).pathname.startsWith("/login")) {
           throw new Error("Failed to sign into Grafana");
         }
       }
@@ -289,7 +289,7 @@ class Streamer {
           Logger.warn("Cookies have expired... signing into Grafana");
           await this.signIntoGrafana();
           await page.goto(this.config.url, { waitUntil: "networkidle0" });
-          if (page.url() !== this.config.url) {
+          if (new URL(page.url()).pathname.startsWith("/login")) {
             throw new Error("Failed to re-sign into Grafana");
           }
         }
@@ -319,14 +319,23 @@ class Streamer {
     const page = await this.browserSession.newPage();
     await page.goto(this.config.url, { waitUntil: "networkidle0" });
 
-    await page.type('[data-testid="data-testid Username input field"]', this.config.grafanaUser);
-    await page.type('[data-testid="data-testid Password input field"]', this.config.grafanaPass);
-
     Logger.debug("Logging in...");
-    await Promise.all([
-      page.waitForNavigation(),
-      page.click('[data-testid="data-testid Login button"]'),
-    ]);
+    const login = await page.evaluate(
+      async ({ user, password }) => {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user, password }),
+        });
+
+        return { ok: response.ok, status: response.status };
+      },
+      { user: this.config.grafanaUser, password: this.config.grafanaPass },
+    );
+
+    if (!login.ok) {
+      throw new Error(`Grafana login failed with status ${login.status}`);
+    }
 
     Logger.debug("Logged in, updating cookies...");
     const cookies = await this.browserSession.cookies();
