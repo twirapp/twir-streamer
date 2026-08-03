@@ -321,26 +321,33 @@ class Streamer {
       await this.browserSession.deleteCookie(...staleCookies);
     }
 
-    const page = await this.browserSession.newPage();
-    await page.goto(this.config.url, { waitUntil: "networkidle0" });
-
     Logger.debug("Logging in...");
-    const login = await page.evaluate(
-      async ({ user, password }) => {
-        const response = await fetch("/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user, password }),
-        });
+    const grafanaUrl = new URL(this.config.url);
+    const response = await fetch(new URL("/login", grafanaUrl), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user: this.config.grafanaUser,
+        password: this.config.grafanaPass,
+      }),
+    });
 
-        return { ok: response.ok, status: response.status };
-      },
-      { user: this.config.grafanaUser, password: this.config.grafanaPass },
-    );
-
-    if (!login.ok) {
-      throw new Error(`Grafana login failed with status ${login.status}`);
+    if (!response.ok) {
+      throw new Error(`Grafana login failed with status ${response.status}`);
     }
+
+    const sessionCookies = response.headers.getSetCookie().map((header) => {
+      const pair = header.slice(0, header.indexOf(";"));
+      const separator = pair.indexOf("=");
+
+      return {
+        name: pair.slice(0, separator),
+        value: pair.slice(separator + 1),
+        domain: grafanaUrl.hostname,
+        path: "/",
+      };
+    });
+    await this.browserSession.setCookie(...sessionCookies);
 
     Logger.debug("Logged in, updating cookies...");
     const cookies = await this.browserSession.cookies();
@@ -351,8 +358,6 @@ class Streamer {
     }
 
     this.cookieLoop = this.updateCookies(this.browserSession, cookies);
-
-    await page.close();
     Logger.warn("Signed into Grafana!");
   }
 
