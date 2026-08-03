@@ -343,11 +343,12 @@ class Streamer {
       return {
         name: pair.slice(0, separator),
         value: pair.slice(separator + 1),
-        domain: grafanaUrl.hostname,
-        path: "/",
+        url: grafanaUrl.origin,
       };
     });
-    await this.browserSession.setCookie(...sessionCookies);
+    const sessionPage = await this.browserSession.newPage();
+    await sessionPage.setCookie(...sessionCookies);
+    await sessionPage.close();
 
     Logger.debug("Logged in, updating cookies...");
     const cookies = await this.browserSession.cookies();
