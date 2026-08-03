@@ -1,7 +1,7 @@
 {
   "streamKey": "amongus_sus",
-  "url": "buh",
-  "grafanaUser": "",
+  "url": "http://grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
+  "grafanaUser": "twir-streamer",
   "grafanaPass": "",
   "grafanaEnabled": false,
   "injectedCss": "[data-testid=\"data-testid Nav toolbar\"],\n[data-testid=\"data-testid dashboard controls\"],\n.css-119uihn {\n  display: none !important;\n}\n.css-biljvk-panel-title h2 {\n  font-size: 30px !important;\n}",

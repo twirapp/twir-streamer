@@ -2,9 +2,13 @@ import puppeteer, { Browser, CDPSession, type CookieData, type LaunchOptions } f
 import { readFileSync, writeFileSync } from "fs";
 import { type ChildProcessWithoutNullStreams, spawn } from "child_process";
 import Logger from "./logger.ts";
-import configuration from "../config.json" with { type: "json" };
+import exampleConfiguration from "../example-config.json" with { type: "json" };
 import { readFile } from "fs/promises";
 import kill from "tree-kill";
+
+const configuration = JSON.parse(
+  readFileSync(new URL("../config.json", import.meta.url), "utf8"),
+) as typeof exampleConfiguration;
 
 const startupImage = await readFile("image.png").catch(() => {
   Logger.error("Could not read startup image");
@@ -170,7 +174,7 @@ class Streamer {
       "44100",
       "-f",
       "flv",
-      `rtmp://127.0.0.1:1935/live/potato`, // Use a nearby ingest server, e.g. live-ord.twitch.tv or check https://stream.twitch.tv/ingests
+      `rtmp://nginx:1935/live/potato`,
     ]);
 
     this.pid = ffmpeg.pid;
@@ -347,7 +351,6 @@ class Streamer {
     Logger.debug("Created browser");
 
     const cookies = JSON.parse(readFileSync("cookies.json", "utf8"));
-    console.log(cookies);
     await this.browserSession.setCookie(...cookies);
 
     this.cookieLoop = this.updateCookies(this.browserSession, cookies);

@@ -16,8 +16,18 @@ services:
       context: .
       dockerfile: Dockerfile.streamer
     restart: always
-    network_mode: host
     depends_on:
       - nginx
+    networks:
+      - default
+      - twir
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./cookies.json:/app/cookies.json
     environment:
       - CHROME_URL=ws://chrome:4444/devtools/browser
+
+networks:
+  twir:
+    name: twir
+    external: true

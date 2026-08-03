@@ -20,6 +20,8 @@ docker compose up -d --build
 - Build the NGINX RTMP image (with stunnel for Kick support).
 - Copy your `streamer.conf` and `stunnel.conf` into the image.
 - The RTMP server will listen on port `1935` (default RTMP port).
+- The streamer joins the external `twir` overlay network and opens Grafana internally at
+  `http://grafana:3000`.
 - Uses stunnel to stream to kick which requires rtmps, which nginx struggles with.
 - The configuration will push your stream to Twitch, YouTube, and Kick.
 
