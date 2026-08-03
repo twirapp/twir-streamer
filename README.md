@@ -12,6 +12,21 @@ It streams the 24/7 grafana for [TwirApp](https://twir.app)
 
 ### 2. Create Container
 
+The `twir` Swarm overlay must already exist with `Attachable=true`. Set these fields in
+`config.json` before starting the service:
+
+```json
+{
+  "grafanaEnabled": true,
+  "grafanaUrl": "http://grafana:3000/d/twir-stream-overview/twir-live-overview?orgId=1&from=now-24h&to=now&timezone=browser&refresh=30s&kiosk&theme=dark",
+  "grafanaUser": "twir-streamer",
+  "grafanaPass": "stored viewer password"
+}
+```
+
+Create `twir-streamer` as a Viewer in Grafana. Do not reuse the Grafana administrator account.
+`config.json` and `cookies.json` are bind-mounted at runtime and excluded from the image build.
+
 ```sh
 docker compose up -d --build
 ```
