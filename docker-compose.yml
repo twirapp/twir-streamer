@@ -26,6 +26,8 @@ services:
       - ./cookies.json:/app/cookies.json
     environment:
       - CHROME_URL=ws://chrome:4444/devtools/browser
+    mem_limit: 2G
+    cpus: 1.5
 
 networks:
   twir:
