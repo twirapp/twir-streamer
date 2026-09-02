@@ -10,6 +10,8 @@ services:
     volumes:
       - ./streamer.conf:/etc/nginx/nginx.conf:ro
       - ./src:/usr/share/nginx/html
+    mem_limit: 200M
+    cpus: "1"
 
   streamer:
     build:
@@ -27,7 +29,7 @@ services:
     environment:
       - CHROME_URL=ws://chrome:4444/devtools/browser
     mem_limit: 2G
-    cpus: 1.5
+    cpus: "1.5"
 
 networks:
   twir:
